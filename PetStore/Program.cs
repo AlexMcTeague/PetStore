@@ -36,8 +36,7 @@ namespace PetStore {
                         productLogic.AddProduct(catFood);
                         Console.WriteLine(JsonSerializer.Serialize(catFood));
                         Console.WriteLine("Your Cat Food was added!");
-                    }
-                    else if (userInput == "2") {
+                    } else if (userInput == "2") {
                         DogLeash dogLeash = new DogLeash();
 
                         Console.WriteLine("Please input the Name of your Dog Leash.");
@@ -57,7 +56,7 @@ namespace PetStore {
                         Console.WriteLine(JsonSerializer.Serialize(dogLeash));
                         Console.WriteLine("Your Dog Leash was added!");
                     } else {
-                        Console.WriteLine("Input not recognized.");
+                        checkForExit(userInput);
                     }
                 } else if (userInput == "2") {
                     Console.WriteLine("--- PRODUCTS ---");
@@ -69,20 +68,26 @@ namespace PetStore {
 
                     Console.WriteLine("\nType a product's name to see detailed info about the product");
                     userInput = Console.ReadLine();
-                    
+
                     Product productResult = productLogic.GetCatFoodByName(userInput);
                     if (productResult == null) {
                         productResult = productLogic.GetDogLeashByName(userInput);
                         if (productResult == null) {
-                            Console.WriteLine($"Product {userInput} could not be found.");
+                            Console.WriteLine($"Product \"{userInput}\" could not be found.");
                         }
                     }
-                } else if (userInput == "exit") {
-                    Console.WriteLine("Goodbye.");
                 } else {
-                    Console.WriteLine("Input not recognized.");
+                    checkForExit(userInput);
                 }
             }
         }
+
+        static void checkForExit(string userInput) {
+            if (userInput == "exit") {
+                Console.WriteLine("Goodbye!");
+            } else {
+                Console.WriteLine("Input not recognized, returning to main menu.");
+            }
+        } 
     }
 }
