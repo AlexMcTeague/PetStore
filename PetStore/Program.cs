@@ -10,7 +10,8 @@ namespace PetStore {
             //TODO: Make Parse usage safer with ToLower and try/catch
             while (userInput.ToLower() != "exit") {
                 Console.WriteLine("Press 1 to add a product");
-                Console.WriteLine("Press 2 to list products");
+                Console.WriteLine("Press 2 to list all products");
+                Console.WriteLine("Press 3 to list only in-stock products");
                 Console.WriteLine("Type 'exit' to quit");
                 userInput = Console.ReadLine();
 
@@ -93,6 +94,31 @@ namespace PetStore {
                         if (productResult == null) {
                             Console.WriteLine($"Product \"{userInput}\" could not be found.");
                         }
+                    }
+
+                    if (productResult != null) {
+                        Console.WriteLine(JsonSerializer.Serialize(productResult));
+                    }
+                } else if (userInput == "3") {
+                    Console.WriteLine("--- IN-STOCK PRODUCTS ---");
+
+                    foreach (string product in productLogic.GetOnlyInStockProducts()) {
+                        Console.WriteLine(product);
+                    }
+
+                    Console.WriteLine("\nType a product's name to see detailed info about the product");
+                    userInput = Console.ReadLine();
+
+                    Product productResult = productLogic.GetCatFoodByName(userInput);
+                    if (productResult == null) {
+                        productResult = productLogic.GetDogLeashByName(userInput);
+                        if (productResult == null) {
+                            Console.WriteLine($"Product \"{userInput}\" could not be found.");
+                        }
+                    }
+
+                    if (productResult != null) {
+                        Console.WriteLine(JsonSerializer.Serialize(productResult));
                     }
                 } else {
                     checkForExit(userInput);

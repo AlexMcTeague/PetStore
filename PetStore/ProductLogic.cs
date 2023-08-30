@@ -8,8 +8,10 @@ namespace PetStore {
 
         public ProductLogic() {
             _products = new List<Product>();
+            _catFoodDict = new Dictionary<string, CatFood>();
+            _dogLeashDict = new Dictionary<string, DogLeash>();
 
-            _products.Add(new DryCatFood {
+            AddProduct(new DryCatFood {
                 Name = "The Bits",
                 Description = "Don't got money? Then you got The Bits :)",
                 Price = 2.99M,
@@ -17,7 +19,7 @@ namespace PetStore {
                 KittenFood = false,
                 WeightPounds = 20
             });
-            _products.Add(new DryCatFood {
+            AddProduct(new DryCatFood {
                 Name = "Tasty Kibble For Average Kitties!",
                 Description = "Iiiit's tasty kibble, for average kitties!!!",
                 Price = 5.99M,
@@ -25,17 +27,13 @@ namespace PetStore {
                 KittenFood = true,
                 WeightPounds = 15
             });
-            _products.Add(new CatFood {
+            AddProduct(new CatFood {
                 Name = "Premium Gurp Deluxe",
                 Description = "Only the nastiest gurp for your poor little meow meow",
                 Price = 15.99M,
                 Quantity = 1,
                 KittenFood = false
             });
-
-
-            _catFoodDict = new Dictionary<string, CatFood>();
-            _dogLeashDict = new Dictionary<string, DogLeash>();
         }
 
         public void AddProduct(Product product) {
