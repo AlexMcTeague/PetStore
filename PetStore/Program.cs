@@ -7,6 +7,7 @@ namespace PetStore {
             var productLogic = new ProductLogic();
             string userInput = "";
 
+            //TODO: Make Parse usage safer with ToLower and try/catch
             while (userInput.ToLower() != "exit") {
                 Console.WriteLine("Press 1 to add a product");
                 Console.WriteLine("Press 2 to list products");
@@ -18,6 +19,26 @@ namespace PetStore {
                     userInput = Console.ReadLine();
 
                     if (userInput == "1") {
+                        //Temporary Dry Cat Food handling
+                        bool isDryCatFood;
+                        while (true) {
+                            Console.WriteLine("Is this a Dry Cat Food? Please input \"true\" or \"false\".");
+                            try {
+                                isDryCatFood = bool.Parse(Console.ReadLine());
+                                break;
+                            } catch (Exception ex) {
+                                Console.WriteLine("That input was not recognized. Please try again.");
+                            }
+                        }
+
+                        if (isDryCatFood) {
+                            Console.WriteLine("This is a Dry Cat Food.");
+                        } else {
+                            Console.WriteLine("This is not a Dry Cat Food.");
+                        }
+
+
+
                         CatFood catFood = new CatFood();
 
                         Console.WriteLine("Please input the Name of your Cat Food.");
@@ -28,8 +49,6 @@ namespace PetStore {
                         catFood.Quantity = int.Parse(Console.ReadLine());
                         Console.WriteLine("Please input the Description of your Cat Food.");
                         catFood.Description = Console.ReadLine();
-                        Console.WriteLine("Please input the Weight in Pounds of your Cat Food.");
-                        catFood.WeightPounds = double.Parse(Console.ReadLine());
                         Console.WriteLine("Is your Cat Food for kittens? Please input \"true\" or \"false\".");
                         catFood.KittenFood = bool.Parse(Console.ReadLine());
 
@@ -62,7 +81,6 @@ namespace PetStore {
                     Console.WriteLine("--- PRODUCTS ---");
 
                     foreach (Product product in productLogic.GetAllProducts()) {
-
                         Console.WriteLine(product.Name);
                     }
 
