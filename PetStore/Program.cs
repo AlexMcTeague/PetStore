@@ -12,6 +12,7 @@ namespace PetStore {
                 Console.WriteLine("Press 1 to add a product");
                 Console.WriteLine("Press 2 to list all products");
                 Console.WriteLine("Press 3 to list only in-stock products");
+                Console.WriteLine("Press 4 to display the total price of in-stock products");
                 Console.WriteLine("Type 'exit' to quit");
                 userInput = Console.ReadLine();
 
@@ -120,6 +121,8 @@ namespace PetStore {
                     if (productResult != null) {
                         Console.WriteLine(JsonSerializer.Serialize(productResult));
                     }
+                } else if (userInput == "4") {
+                    Console.WriteLine($"Total Inventory Price: ${Math.Round(productLogic.GetTotalPriceOfInventory(), 2)}");
                 } else {
                     checkForExit(userInput);
                 }

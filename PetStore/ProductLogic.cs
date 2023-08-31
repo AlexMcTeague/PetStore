@@ -55,6 +55,10 @@ namespace PetStore {
             return _products.InStock();
         }
 
+        public decimal GetTotalPriceOfInventory() {
+            return _products.InStock().Sum(x => x.Price * x.Quantity);
+        }
+
         public CatFood GetCatFoodByName(string name) {
             try {
                 return _catFoodDict[name];
