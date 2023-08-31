@@ -5,9 +5,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace PetStore {
-    internal class CatFood:Product {
+namespace PetStore.Products
+{
+    internal class DogLeash : Product
+    {
         [JsonInclude]
-        public bool KittenFood;
+        public int LengthInches;
+        [JsonInclude]
+        public string Material;
     }
 }

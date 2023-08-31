@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace PetStore {
-    internal class Product {
+namespace PetStore.Products
+{
+    internal class Product
+    {
         [JsonInclude]
         public string Name;
         [JsonInclude]

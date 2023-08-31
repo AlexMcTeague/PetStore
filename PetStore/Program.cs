@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
-using System.Xml;
+using PetStore.Logic;
+using PetStore.Products;
 
 namespace PetStore {
     internal class Program {

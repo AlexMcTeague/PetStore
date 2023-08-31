@@ -5,8 +5,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace PetStore {
-    internal class DryCatFood:CatFood {
+namespace PetStore.Products
+{
+    internal class DryCatFood : CatFood
+    {
         [JsonInclude]
         public double WeightPounds;
     }
