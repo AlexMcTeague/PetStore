@@ -102,8 +102,8 @@ namespace PetStore {
                 } else if (userInput == "3") {
                     Console.WriteLine("--- IN-STOCK PRODUCTS ---");
 
-                    foreach (string product in productLogic.GetOnlyInStockProducts()) {
-                        Console.WriteLine(product);
+                    foreach (Product product in productLogic.GetOnlyInStockProducts()) {
+                        Console.WriteLine(product.Name);
                     }
 
                     Console.WriteLine("\nType a product's name to see detailed info about the product");

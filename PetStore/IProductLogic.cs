@@ -10,7 +10,7 @@ namespace PetStore {
 
         public List<Product> GetAllProducts();
 
-        public List<String> GetOnlyInStockProducts();
+        public List<Product> GetOnlyInStockProducts();
 
         public CatFood GetCatFoodByName(string name);
 

@@ -51,8 +51,8 @@ namespace PetStore {
             return _products;
         }
 
-        public List<String> GetOnlyInStockProducts() {
-            return _products.Where(x => x.Quantity > 0).Select(x => x.Name).ToList();
+        public List<Product> GetOnlyInStockProducts() {
+            return _products.InStock();
         }
 
         public CatFood GetCatFoodByName(string name) {
