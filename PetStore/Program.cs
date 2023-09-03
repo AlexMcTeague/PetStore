@@ -8,7 +8,6 @@ namespace PetStore {
             var productLogic = new ProductLogic();
             string userInput = "";
 
-            //TODO: Make Parse usage safer with ToLower and try/catch
             while (userInput.ToLower() != "exit") {
                 Console.WriteLine("Press 1 to add a product");
                 Console.WriteLine("Press 2 to list all products");
@@ -40,39 +39,26 @@ namespace PetStore {
                             Console.WriteLine("This is not a Dry Cat Food.");
                         }
 
-
-
                         CatFood catFood = new CatFood();
-
-                        Console.WriteLine("Please input the Name of your Cat Food.");
-                        catFood.Name = Console.ReadLine();
-                        Console.WriteLine("Please input the Price of your Cat Food.");
-                        catFood.Price = decimal.Parse(Console.ReadLine());
-                        Console.WriteLine("Please input the Quantity of your Cat Food.");
-                        catFood.Quantity = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Please input the Description of your Cat Food.");
-                        catFood.Description = Console.ReadLine();
-                        Console.WriteLine("Is your Cat Food for kittens? Please input \"true\" or \"false\".");
-                        catFood.KittenFood = bool.Parse(Console.ReadLine());
+                        catFood.Name = PetStoreMenu.RequestInput<string>("Please input the Name of your Cat Food.");
+                        catFood.Price = PetStoreMenu.RequestInput<decimal>("Please input the Price of your Cat Food.");
+                        catFood.Quantity = PetStoreMenu.RequestInput<int>("Please input the Quantity of your Cat Food.");
+                        catFood.Description = PetStoreMenu.RequestInput<string>("Please input the Description of your Cat Food.");
+                        catFood.KittenFood = PetStoreMenu.RequestInput<bool>("Is your Cat Food for kittens? Please input \"true\" or \"false\".");
 
                         productLogic.AddProduct(catFood);
                         Console.WriteLine(JsonSerializer.Serialize(catFood));
                         Console.WriteLine("Your Cat Food was added!");
                     } else if (userInput == "2") {
-                        DogLeash dogLeash = new DogLeash();
 
-                        Console.WriteLine("Please input the Name of your Dog Leash.");
-                        dogLeash.Name = Console.ReadLine();
-                        Console.WriteLine("Please input the Price of your Dog Leash.");
-                        dogLeash.Price = decimal.Parse(Console.ReadLine());
-                        Console.WriteLine("Please input the Quantity of your Dog Leash.");
-                        dogLeash.Quantity = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Please input the Description of your Dog Leash.");
-                        dogLeash.Description = Console.ReadLine();
-                        Console.WriteLine("Please input the Length in Inches of your Dog Leash.");
-                        dogLeash.LengthInches = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Please input the Material of your Dog Leash.");
-                        dogLeash.Material = Console.ReadLine();
+                        DogLeash dogLeash = new DogLeash();
+                        dogLeash.Name = PetStoreMenu.RequestInput<string>("Please input the Name of your Dog Leash.");
+                        dogLeash.Price = PetStoreMenu.RequestInput<decimal>("Please input the Price of your Dog Leash.");
+                        dogLeash.Quantity = PetStoreMenu.RequestInput<int>("Please input the Quantity of your Dog Leash.");
+                        dogLeash.Description = PetStoreMenu.RequestInput<string>("Please input the Description of your Dog Leash.");
+                        dogLeash.LengthInches = PetStoreMenu.RequestInput<int>("Please input the Length of your Dog Leash.");
+                        //TODO: Make Material an Enum?
+                        dogLeash.Material = PetStoreMenu.RequestInput<string>("Please input the Material of your Dog Leash.");
 
                         productLogic.AddProduct(dogLeash);
                         Console.WriteLine(JsonSerializer.Serialize(dogLeash));

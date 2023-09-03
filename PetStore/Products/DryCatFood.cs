@@ -10,6 +10,6 @@ namespace PetStore.Products
     internal class DryCatFood : CatFood
     {
         [JsonInclude]
-        public double WeightPounds;
+        public decimal WeightPounds;
     }
 }

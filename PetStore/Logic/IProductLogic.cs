@@ -20,6 +20,5 @@ namespace PetStore.Logic
         public CatFood GetCatFoodByName(string name);
 
         public DogLeash GetDogLeashByName(string name);
-
     }
 }
