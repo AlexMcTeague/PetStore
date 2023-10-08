@@ -16,9 +16,5 @@ namespace PetStore.Logic
         public List<Product> GetOnlyInStockProducts();
 
         public decimal GetTotalPriceOfInventory();
-
-        public CatFood GetCatFoodByName(string name);
-
-        public DogLeash GetDogLeashByName(string name);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -9,9 +10,9 @@ namespace PetStore.Products
 {
     internal class DogLeash : Product
     {
-        [JsonInclude]
-        public int LengthInches;
-        [JsonInclude]
-        public string Material;
+        [Display(Order = 50)]
+        public string Material { get; set; }
+        [Display(Order = 60)]
+        public int LengthInches { get; set; }
     }
 }

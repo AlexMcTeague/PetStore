@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel;
+using System.Text.Json;
 using PetStore.Logic;
 using PetStore.Products;
 
@@ -6,122 +7,48 @@ namespace PetStore {
     internal class Program {
         static void Main(string[] args) {
             var productLogic = new ProductLogic();
-            string userInput = "";
+            int menuChoice;
 
-            while (userInput.ToLower() != "exit") {
-                Console.WriteLine("Press 1 to add a product");
-                Console.WriteLine("Press 2 to list all products");
-                Console.WriteLine("Press 3 to list only in-stock products");
-                Console.WriteLine("Press 4 to display the total price of in-stock products");
-                Console.WriteLine("Type 'exit' to quit");
-                userInput = Console.ReadLine();
+            Console.WriteLine("Type \"exit\" at any time to exit program.");
+            while (true) {
+                List<String> menuList = new List<String> {
+                    "Exit program",
+                    "Add a product",
+                    "List all products",
+                    "List in-stock products",
+                    "Display total inventory price"
+                };
 
-                if (userInput == "1") {
-                    Console.WriteLine("Press 1 to add a Cat Food, press 2 to add a Dog Leash");
-                    userInput = Console.ReadLine();
+                menuChoice = PetStoreMenu.GetSelectionFromList(menuList);
 
-                    if (userInput == "1") {
-                        //Temporary Dry Cat Food handling
-                        bool isDryCatFood;
-                        while (true) {
-                            Console.WriteLine("Is this a Dry Cat Food? Please input \"true\" or \"false\".");
-                            try {
-                                isDryCatFood = bool.Parse(Console.ReadLine());
-                                break;
-                            } catch (Exception ex) {
-                                Console.WriteLine("That input was not recognized. Please try again.");
-                            }
+                switch (menuChoice) {
+                    case 1:
+                        Product? product = productLogic.ProductFactory();
+                        if (product != null) {
+                            product.RequestAllProperties();
+                            productLogic.AddProduct(product);
+                            Console.WriteLine($"Your {product.GetType().Name} was added!");
                         }
-
-                        if (isDryCatFood) {
-                            Console.WriteLine("This is a Dry Cat Food.");
-                        } else {
-                            Console.WriteLine("This is not a Dry Cat Food.");
-                        }
-
-                        CatFood catFood = new CatFood();
-                        catFood.Name = PetStoreMenu.RequestInput<string>("Please input the Name of your Cat Food.");
-                        catFood.Price = PetStoreMenu.RequestInput<decimal>("Please input the Price of your Cat Food.");
-                        catFood.Quantity = PetStoreMenu.RequestInput<int>("Please input the Quantity of your Cat Food.");
-                        catFood.Description = PetStoreMenu.RequestInput<string>("Please input the Description of your Cat Food.");
-                        catFood.KittenFood = PetStoreMenu.RequestInput<bool>("Is your Cat Food for kittens? Please input \"true\" or \"false\".");
-
-                        productLogic.AddProduct(catFood);
-                        Console.WriteLine(JsonSerializer.Serialize(catFood));
-                        Console.WriteLine("Your Cat Food was added!");
-                    } else if (userInput == "2") {
-
-                        DogLeash dogLeash = new DogLeash();
-                        dogLeash.Name = PetStoreMenu.RequestInput<string>("Please input the Name of your Dog Leash.");
-                        dogLeash.Price = PetStoreMenu.RequestInput<decimal>("Please input the Price of your Dog Leash.");
-                        dogLeash.Quantity = PetStoreMenu.RequestInput<int>("Please input the Quantity of your Dog Leash.");
-                        dogLeash.Description = PetStoreMenu.RequestInput<string>("Please input the Description of your Dog Leash.");
-                        dogLeash.LengthInches = PetStoreMenu.RequestInput<int>("Please input the Length of your Dog Leash.");
-                        //TODO: Make Material an Enum?
-                        dogLeash.Material = PetStoreMenu.RequestInput<string>("Please input the Material of your Dog Leash.");
-
-                        productLogic.AddProduct(dogLeash);
-                        Console.WriteLine(JsonSerializer.Serialize(dogLeash));
-                        Console.WriteLine("Your Dog Leash was added!");
-                    } else {
-                        checkForExit(userInput);
+                        break;
+                    case 2:
+                    {
+                        Console.WriteLine("--- ALL PRODUCTS ---");
+                        var selection = PetStoreMenu.GetSelectionFromList(productLogic.GetAllProducts());
+                        selection?.PrintDetails();
+                        break;
                     }
-                } else if (userInput == "2") {
-                    Console.WriteLine("--- PRODUCTS ---");
-
-                    foreach (Product product in productLogic.GetAllProducts()) {
-                        Console.WriteLine(product.Name);
+                    case 3:
+                    {
+                        Console.WriteLine("--- IN-STOCK PRODUCTS ---");
+                        var selection = PetStoreMenu.GetSelectionFromList(productLogic.GetOnlyInStockProducts());
+                        selection?.PrintDetails();
+                        break;
                     }
-
-                    Console.WriteLine("\nType a product's name to see detailed info about the product");
-                    userInput = Console.ReadLine();
-
-                    Product productResult = productLogic.GetCatFoodByName(userInput);
-                    if (productResult == null) {
-                        productResult = productLogic.GetDogLeashByName(userInput);
-                        if (productResult == null) {
-                            Console.WriteLine($"Product \"{userInput}\" could not be found.");
-                        }
-                    }
-
-                    if (productResult != null) {
-                        Console.WriteLine(JsonSerializer.Serialize(productResult));
-                    }
-                } else if (userInput == "3") {
-                    Console.WriteLine("--- IN-STOCK PRODUCTS ---");
-
-                    foreach (Product product in productLogic.GetOnlyInStockProducts()) {
-                        Console.WriteLine(product.Name);
-                    }
-
-                    Console.WriteLine("\nType a product's name to see detailed info about the product");
-                    userInput = Console.ReadLine();
-
-                    Product productResult = productLogic.GetCatFoodByName(userInput);
-                    if (productResult == null) {
-                        productResult = productLogic.GetDogLeashByName(userInput);
-                        if (productResult == null) {
-                            Console.WriteLine($"Product \"{userInput}\" could not be found.");
-                        }
-                    }
-
-                    if (productResult != null) {
-                        Console.WriteLine(JsonSerializer.Serialize(productResult));
-                    }
-                } else if (userInput == "4") {
-                    Console.WriteLine($"Total Inventory Price: ${Math.Round(productLogic.GetTotalPriceOfInventory(), 2)}");
-                } else {
-                    checkForExit(userInput);
+                    case 4:
+                        Console.WriteLine($"Total Inventory Price: ${Math.Round(productLogic.GetTotalPriceOfInventory(), 2)}");
+                        break;
                 }
             }
         }
-
-        static void checkForExit(string userInput) {
-            if (userInput == "exit") {
-                Console.WriteLine("Goodbye!");
-            } else {
-                Console.WriteLine("Input not recognized, returning to main menu.");
-            }
-        } 
     }
 }

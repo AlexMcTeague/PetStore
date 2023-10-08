@@ -6,14 +6,10 @@ namespace PetStore.Logic
     internal class ProductLogic : IProductLogic
     {
         private List<Product> _products;
-        private Dictionary<string, DogLeash> _dogLeashDict;
-        private Dictionary<string, CatFood> _catFoodDict;
 
         public ProductLogic()
         {
             _products = new List<Product>();
-            _catFoodDict = new Dictionary<string, CatFood>();
-            _dogLeashDict = new Dictionary<string, DogLeash>();
 
             AddProduct(new DryCatFood
             {
@@ -21,7 +17,7 @@ namespace PetStore.Logic
                 Description = "Don't got money? Then you got The Bits :)",
                 Price = 2.99M,
                 Quantity = 0,
-                KittenFood = false,
+                IsKittenFood = false,
                 WeightPounds = 20
             });
             AddProduct(new DryCatFood
@@ -30,7 +26,7 @@ namespace PetStore.Logic
                 Description = "Iiiit's tasty kibble, for average kitties!!!",
                 Price = 5.99M,
                 Quantity = 3,
-                KittenFood = true,
+                IsKittenFood = true,
                 WeightPounds = 15
             });
             AddProduct(new CatFood
@@ -39,22 +35,13 @@ namespace PetStore.Logic
                 Description = "Only the nastiest gurp for your poor little meow meow",
                 Price = 15.99M,
                 Quantity = 1,
-                KittenFood = false
+                IsKittenFood = false
             });
         }
 
         public void AddProduct(Product product)
         {
             _products.Add(product);
-
-            if (product is CatFood)
-            {
-                _catFoodDict.Add(product.Name, product as CatFood);
-            }
-            else if (product is DogLeash)
-            {
-                _dogLeashDict.Add(product.Name, product as DogLeash);
-            }
         }
 
         public List<Product> GetAllProducts()
@@ -72,27 +59,26 @@ namespace PetStore.Logic
             return _products.InStock().Sum(x => x.Price * x.Quantity);
         }
 
-        public CatFood GetCatFoodByName(string name)
+        public Product? ProductFactory()
         {
-            try
-            {
-                return _catFoodDict[name];
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
+            List<String> menuList = new List<String> {
+                "Return to previous menu",
+                "Cat Food",
+                "Dry Cat Food",
+                "Dog Leash"
+            };
 
-        public DogLeash GetDogLeashByName(string name)
-        {
-            try
-            {
-                return _dogLeashDict[name];
-            }
-            catch (Exception ex)
-            {
-                return null;
+            int menuChoice = PetStoreMenu.GetSelectionFromList(menuList);
+
+            switch (menuChoice) {
+                case 1:
+                    return new CatFood();
+                case 2:
+                    return new DryCatFood();
+                case 3:
+                    return new DogLeash();
+                default:
+                    return null;
             }
         }
     }

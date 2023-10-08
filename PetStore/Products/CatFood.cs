@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -9,7 +10,7 @@ namespace PetStore.Products
 {
     internal class CatFood : Product
     {
-        [JsonInclude]
-        public bool KittenFood;
+        [Display(Order = 50)]
+        public bool IsKittenFood { get; set; }
     }
 }
