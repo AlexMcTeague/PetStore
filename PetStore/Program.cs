@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
 using PetStore.Logic;
 using PetStore.Products;
 
 namespace PetStore {
     internal class Program {
         static void Main(string[] args) {
-            var productLogic = new ProductLogic();
+            IServiceProvider services = CreateServiceCollection();
+            var productLogic = services.GetService<IProductLogic>();
             int menuChoice;
 
             Console.WriteLine("Type \"exit\" at any time to exit program.");
@@ -22,6 +24,10 @@ namespace PetStore {
                 menuChoice = PetStoreMenu.GetSelectionFromList(menuList);
 
                 switch (menuChoice) {
+                    case 0:
+                        Console.WriteLine("Goodbye!");
+                        Environment.Exit(1);
+                        break;
                     case 1:
                         Product? product = productLogic.ProductFactory();
                         if (product != null) {
@@ -49,6 +55,12 @@ namespace PetStore {
                         break;
                 }
             }
+        }
+
+        static IServiceProvider CreateServiceCollection() {
+            return new ServiceCollection()
+                .AddTransient<IProductLogic, ProductLogic>()
+                .BuildServiceProvider();
         }
     }
 }

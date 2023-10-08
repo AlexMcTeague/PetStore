@@ -16,5 +16,7 @@ namespace PetStore.Logic
         public List<Product> GetOnlyInStockProducts();
 
         public decimal GetTotalPriceOfInventory();
+
+        public Product? ProductFactory();
     }
 }
