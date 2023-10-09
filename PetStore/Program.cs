@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using PetStore.Logic;
@@ -13,7 +14,7 @@ namespace PetStore {
 
             Console.WriteLine("Type \"exit\" at any time to exit program.");
             while (true) {
-                List<String> menuList = new List<String> {
+                List<String> menuList = new List<string> {
                     "Exit program",
                     "Add a product",
                     "List all products",
@@ -31,9 +32,33 @@ namespace PetStore {
                     case 1:
                         Product? product = productLogic.ProductFactory();
                         if (product != null) {
-                            product.RequestAllProperties();
-                            productLogic.AddProduct(product);
-                            Console.WriteLine($"Your {product.GetType().Name} was added!");
+                            menuList = new List<string> {
+                                "Return to Main Menu",
+                                $"Add {product.GetType().Name} via Menu",
+                                $"Add {product.GetType().Name} via JSON"
+                            };
+                            menuChoice = PetStoreMenu.GetSelectionFromList(menuList);
+
+                            switch (menuChoice) {
+                                case 1:
+                                    product.RequestAllProperties();
+                                    productLogic.AddProduct(product);
+                                    Console.WriteLine($"Your {product.GetType().Name} was added!");
+                                    break;
+                                case 2:
+                                    string jsonString = PetStoreMenu.RequestInput<string>("Please input your JSON string.");
+                                    if (product.GetType() == typeof(CatFood)) {
+                                        product = JsonSerializer.Deserialize<CatFood>(jsonString);
+                                    } else if (product.GetType() == typeof(DryCatFood)) {
+                                        product = JsonSerializer.Deserialize<DryCatFood>(jsonString);
+                                    } else if (product.GetType() == typeof(DogLeash)) {
+                                        product = JsonSerializer.Deserialize<DogLeash>(jsonString);
+                                    }
+                                    
+                                    productLogic.AddProduct(product);
+                                    Console.WriteLine($"Your {product.GetType().Name} was added!");
+                                    break;
+                            }
                         }
                         break;
                     case 2:
