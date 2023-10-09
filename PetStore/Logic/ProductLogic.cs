@@ -1,5 +1,8 @@
 ﻿using System;
+using FluentValidation;
+using FluentValidation.Results;
 using PetStore.Products;
+using PetStore.Products.Validation;
 
 namespace PetStore.Logic
 {
@@ -41,6 +44,9 @@ namespace PetStore.Logic
 
         public void AddProduct(Product product)
         {
+            ProductValidator validator = new ProductValidator();
+            ValidationResult results = validator.Validate(product);
+            validator.ValidateAndThrow(product);
             _products.Add(product);
         }
 
